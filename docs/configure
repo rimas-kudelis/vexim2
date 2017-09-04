@@ -162,9 +162,9 @@ acl_smtp_rcpt = acl_check_rcpt
 
 # The following ACL entry is used if you want to do content scanning with the
 # exiscan-acl patch. When you uncomment this line, you must also review the
-# acl_check_content entry in the ACL section further below.
+# acl_check_data entry in the ACL section further below.
 
-acl_smtp_data = acl_check_content
+acl_smtp_data = acl_check_data
 
 # This ACL added by Avleen Vig will drop all mail where the sender's helo
 # command contains your IP address. Please check the IP address at the top
@@ -333,8 +333,11 @@ tls_require_ciphers = ${if =={$received_port}{25}\
 begin acl
 acl_check_helo:
 
-# Include Vexim specific helo ACLs
+  # Include Vexim specific helo ACLs
   .include /usr/local/etc/exim/vexim-acl-check-helo.conf
+
+  accept
+
 
 # This access control list is used for every RCPT command in an incoming
 # SMTP message. The tests are run in order until the address is either
@@ -431,10 +434,10 @@ acl_check_rcpt:
 # should be treated as EXAMPLES. You MUST read the file doc/exiscan-acl-spec.txt
 # to fully understand what you are doing ...
 
-acl_check_content:
+acl_check_data:
 
   # Include Vexim specific rcpt ACLs
-  .include /usr/local/etc/exim/vexim-acl-check-content.conf
+  .include /usr/local/etc/exim/vexim-acl-check-data.conf
 
   # finally accept all the rest
   accept
